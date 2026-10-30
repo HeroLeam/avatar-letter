@@ -67,7 +67,7 @@ let avatarState = {
   nsfwText: "NSFW",
   nsfwColor: "#ff3399",
   nsfwPosition: "bottom-right",
-  nsfwSize: 20,
+  nsfwSize: 24,
 };
 
 function initializeFonts() {
