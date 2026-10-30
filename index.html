@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Letter - Gerador de Avatares</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Fira+Code:wght@500;700&family=Montserrat:wght@700;900&family=Bebas+Neue&family=Pacifico&family=Cinzel:wght@700&family=Permanent+Marker&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Arquivo CSS Externo -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-brand">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <div>
+                    <h1>Avatar Letter</h1>
+                    <p>Criador de avatares tipográficos</p>
+                </div>
+            </div>
+            <button onclick="resetarPadroes()" class="btn-secondary">
+                <i class="fa-solid fa-rotate-right"></i>
+                <span>Restaurar Padrão</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+
+        <!-- Coluna de Pré-visualização & Download -->
+        <div class="preview-section">
+            <div class="avatar-wrapper">
+                <div id="preview-glow" class="preview-glow"></div>
+                <div id="avatar-container" class="avatar-container">
+                    <span id="avatar-text">A</span>
+                    <div id="avatar-nsfw-tag" class="avatar-nsfw-tag hidden">NSFW</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="baixarAvatar()" class="btn-primary">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Baixar PNG em Alta Resolução</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Coluna de Controles e Configurações -->
+        <div class="controls-panel">
+            <h2>
+                <i class="fa-solid fa-sliders"></i>
+                <span>Personalização</span>
+            </h2>
+
+            <!-- Texto do Avatar -->
+            <div class="control-group">
+                <label for="input-texto">
+                    <span>Texto do Avatar</span>
+                    <span class="label-hint">Recomendado: 1 a 3 caracteres</span>
+                </label>
+                <input type="text" id="input-texto" value="A" maxlength="5" oninput="atualizarTexto(this.value)">
+            </div>
+
+            <!-- Configurações da Tag NSFW -->
+            <div class="nsfw-box">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="input-nsfw-check" onchange="atualizarNsfwAtivo(this.checked)">
+                    <span>Exibir Tag no Canto (Ex: NSFW)</span>
+                </label>
+
+                <div id="nsfw-opcoes" class="nsfw-sub-options hidden">
+                    <div class="nsfw-grid">
+                        <div class="control-subgroup">
+                            <label>Texto da Tag</label>
+                            <input type="text" id="input-nsfw-texto" value="NSFW" maxlength="8"
+                                oninput="atualizarNsfwTexto(this.value)">
+                        </div>
+                        <div class="control-subgroup">
+                            <label>Cor da Tag</label>
+                            <div class="color-input-wrapper">
+                                <input type="color" id="input-nsfw-cor" value="#ff3399"
+                                    oninput="atualizarNsfwCor(this.value)">
+                                <input type="text" id="texto-nsfw-cor" value="#FF3399"
+                                    onchange="atualizarNsfwCor(this.value)">
+                            </div>
+                        </div>
+                        <div class="control-subgroup">
+                            <label>Posição</label>
+                            <select id="input-nsfw-posicao" onchange="atualizarNsfwPosicao(this.value)">
+                                <option value="top-left">Superior Esquerdo</option>
+                                <option value="top-right">Superior Direito</option>
+                                <option value="bottom-left">Inferior Esquerdo</option>
+                                <option value="bottom-right" selected>Inferior Direito</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="control-subgroup">
+                        <div class="slider-header">
+                            <label>Tamanho da Tag</label>
+                            <span id="nsfw-tamanho-valor" class="value-display">20px</span>
+                        </div>
+                        <input type="range" id="input-nsfw-tamanho" min="10" max="48" step="1" value="20"
+                            oninput="atualizarNsfwTamanho(this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Seletores de Cores (Fundo e Letra) -->
+            <div class="color-pickers-grid">
+                <!-- Cor de Fundo -->
+                <div class="control-group">
+                    <div class="label-with-action">
+                        <label>Cor de Fundo</label>
+                        <button onclick="gerarCorAleatoriaFundo()" class="btn-text">
+                            <i class="fa-solid fa-dice"></i> Aleatória
+                        </button>
+                    </div>
+                    <div class="color-input-wrapper">
+                        <input type="color" id="input-cor-fundo" value="#3b5323"
+                            oninput="atualizarCorFundo(this.value)">
+                        <input type="text" id="texto-cor-fundo" value="#3B5323"
+                            onchange="atualizarCorFundo(this.value)">
+                    </div>
+                </div>
+
+                <!-- Cor da Letra -->
+                <div class="control-group">
+                    <div class="label-with-action">
+                        <label>Cor da Letra</label>
+                        <button onclick="gerarCorAleatoriaLetra()" class="btn-text">
+                            <i class="fa-solid fa-dice"></i> Aleatória
+                        </button>
+                    </div>
+                    <div class="color-input-wrapper">
+                        <input type="color" id="input-cor-letra" value="#000000"
+                            oninput="atualizarCorLetra(this.value)">
+                        <input type="text" id="texto-cor-letra" value="#000000"
+                            onchange="atualizarCorLetra(this.value)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Família de Fonte -->
+            <div class="control-group">
+                <div class="label-with-action">
+                    <label>Estilo da Fonte</label>
+                    <button onclick="escolherFonteAleatoria()" class="btn-text">
+                        <i class="fa-solid fa-dice"></i> Fonte Aleatória
+                    </button>
+                </div>
+                <div class="font-options-grid" id="font-options">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+            <!-- Ajuste de Tamanho da Fonte (Linha única) -->
+            <div class="control-group">
+                <div class="slider-header">
+                    <label>Tamanho da Fonte</label>
+                    <div class="number-input-wrap">
+                        <input type="number" id="input-tamanho-num" value="16" min="1" step="0.5"
+                            oninput="atualizarTamanho(this.value, true)">
+                        <span class="unit">rem</span>
+                    </div>
+                </div>
+                <input type="range" id="input-tamanho" min="1" max="25" step="0.5" value="16"
+                    oninput="atualizarTamanho(this.value, false)">
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="footer">
+        Avatar Letter &bull; Desenvolvido para uso web interativo
+    </footer>
+
+    <!-- Notificação Toast -->
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-circle-check" id="toast-icon"></i>
+        <span id="toast-msg">Avatar salvo com sucesso!</span>
+    </div>
+
+    <!-- Arquivo JS Externo -->
+    <script src="script.js"></script>
+</body>
+
+</html>
