@@ -1,150 +1,148 @@
-const fontes = [
+const fonts = [
   {
     id: "Inter",
-    nome: "Moderna (Inter)",
+    name: "Moderna (Inter)",
     cssFamily: "'Inter', sans-serif",
     offsetY: 0,
     canvasOffsetY: 0,
   },
   {
     id: "Montserrat",
-    nome: "Geometric (Montserrat)",
+    name: "Geometric (Montserrat)",
     cssFamily: "'Montserrat', sans-serif",
     offsetY: 0,
     canvasOffsetY: 0,
   },
   {
     id: "Bebas",
-    nome: "Condensada (Bebas)",
+    name: "Condensada (Bebas)",
     cssFamily: "'Bebas Neue', sans-serif",
     offsetY: 4,
     canvasOffsetY: 0.05,
   },
   {
     id: "Playfair",
-    nome: "Elegante (Playfair)",
+    name: "Elegante (Playfair)",
     cssFamily: "'Playfair Display', serif",
     offsetY: 0,
     canvasOffsetY: 0,
   },
   {
     id: "Cinzel",
-    nome: "Clássica (Cinzel)",
+    name: "Clássica (Cinzel)",
     cssFamily: "'Cinzel', serif",
     offsetY: 0,
     canvasOffsetY: 0,
   },
   {
     id: "Fira",
-    nome: "Monospace (Fira)",
+    name: "Monospace (Fira)",
     cssFamily: "'Fira Code', monospace",
     offsetY: 0,
     canvasOffsetY: 0,
   },
   {
     id: "Pacifico",
-    nome: "Cursiva (Pacifico)",
+    name: "Cursiva (Pacifico)",
     cssFamily: "'Pacifico', cursive",
     offsetY: -4,
     canvasOffsetY: -0.04,
   },
   {
     id: "Marker",
-    nome: "Estilizada (Marker)",
+    name: "Estilizada (Marker)",
     cssFamily: "'Permanent Marker', cursive",
     offsetY: 0,
     canvasOffsetY: 0,
   },
 ];
 
-let estadoAvatar = {
-  texto: "A",
-  corFundo: "#fff",
-  corLetra: "#000",
-  fonteObj: fontes[0],
-  tamanhoLetra: 16,
-  nsfwAtivo: false,
-  nsfwTexto: "NSFW",
-  nsfwCor: "#ff3399",
-  nsfwPosicao: "bottom-right",
-  nsfwTamanho: 20,
+let avatarState = {
+  text: "A",
+  bgColor: "#fff",
+  textColor: "#000",
+  fontObj: fonts[0],
+  fontSize: 16,
+  nsfwActive: false,
+  nsfwText: "NSFW",
+  nsfwColor: "#ff3399",
+  nsfwPosition: "bottom-right",
+  nsfwSize: 20,
 };
 
-function inicializarFontes() {
+function initializeFonts() {
   const container = document.getElementById("font-options");
   container.innerHTML = "";
-  fontes.forEach((f) => {
+  fonts.forEach((f) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = `font-btn ${f.cssFamily === estadoAvatar.fonteObj.cssFamily ? "active" : ""}`;
-    btn.innerHTML = `<span style="font-family: ${f.cssFamily}">${f.nome.split(" ")[0]}</span>`;
-    btn.onclick = () => alterarFonte(f, btn);
+    btn.className = `font-btn ${f.cssFamily === avatarState.fontObj.cssFamily ? "active" : ""}`;
+    btn.innerHTML = `<span style="font-family: ${f.cssFamily}">${f.name.split(" ")[0]}</span>`;
+    btn.onclick = () => changeFont(f, btn);
     container.appendChild(btn);
   });
 }
 
-function atualizarTexto(valor) {
-  estadoAvatar.texto = valor || "A";
-  document.getElementById("avatar-text").innerText = estadoAvatar.texto;
+function updateText(value) {
+  avatarState.text = value || "A";
+  document.getElementById("avatar-text").innerText = avatarState.text;
 }
 
-function atualizarNsfwAtivo(ativo) {
-  estadoAvatar.nsfwAtivo = ativo;
-  const opcs = document.getElementById("nsfw-opcoes");
+function updateNsfwActive(active) {
+  avatarState.nsfwActive = active;
+  const optionsEl = document.getElementById("nsfw-options");
   const tagEl = document.getElementById("avatar-nsfw-tag");
-  if (ativo) {
-    opcs.classList.remove("hidden");
+  if (active) {
+    optionsEl.classList.remove("hidden");
     tagEl.classList.remove("hidden");
   } else {
-    opcs.classList.add("hidden");
+    optionsEl.classList.add("hidden");
     tagEl.classList.add("hidden");
   }
 }
 
-function atualizarNsfwTexto(valor) {
-  estadoAvatar.nsfwTexto = valor || "NSFW";
-  document.getElementById("avatar-nsfw-tag").innerText = estadoAvatar.nsfwTexto;
+function updateNsfwText(value) {
+  avatarState.nsfwText = value || "NSFW";
+  document.getElementById("avatar-nsfw-tag").innerText = avatarState.nsfwText;
 }
 
-// Função auxiliar para validar e formatar o hexadecimal com ou sem '#'
-function formatarHex(valor) {
-  let limpo = valor.trim();
-  if (limpo.startsWith("#")) {
-    limpo = limpo.substring(1);
+function formatHex(value) {
+  let clean = value.trim();
+  if (clean.startsWith("#")) {
+    clean = clean.substring(1);
   }
-  // Verifica se tem 3 ou 6 caracteres válidos
-  if (limpo.length === 3 || limpo.length === 6) {
-    return "#" + limpo;
+  if (clean.length === 3 || clean.length === 6) {
+    return "#" + clean;
   }
   return null;
 }
 
-function atualizarNsfwCor(valor, veioDoInputTexto = false) {
-  let hexFormatado = formatarHex(valor);
-  if (!hexFormatado) return; // Se for inválido enquanto digita, não quebra
+function updateNsfwColor(value, isFromTextInput = false) {
+  let formattedHex = formatHex(value);
+  if (!formattedHex) return;
 
-  estadoAvatar.nsfwCor = hexFormatado;
-  document.getElementById("input-nsfw-cor").value = hexFormatado;
+  avatarState.nsfwColor = formattedHex;
+  document.getElementById("input-nsfw-color").value = formattedHex;
 
-  if (!veioDoInputTexto) {
-    document.getElementById("texto-nsfw-cor").value =
-      hexFormatado.toUpperCase();
+  if (!isFromTextInput) {
+    document.getElementById("text-nsfw-color").value =
+      formattedHex.toUpperCase();
   }
 
-  document.getElementById("avatar-nsfw-tag").style.color = hexFormatado;
+  document.getElementById("avatar-nsfw-tag").style.color = formattedHex;
 }
 
-function atualizarNsfwTamanho(val) {
-  estadoAvatar.nsfwTamanho = parseInt(val);
-  document.getElementById("nsfw-tamanho-valor").innerText = val + "px";
+function updateNsfwSize(val) {
+  avatarState.nsfwSize = parseInt(val);
+  document.getElementById("nsfw-size-value").innerText = val + "px";
   document.getElementById("avatar-nsfw-tag").style.fontSize = val + "px";
 }
 
-function atualizarNsfwPosicao(pos) {
-  estadoAvatar.nsfwPosicao = pos;
+function updateNsfwPosition(pos) {
+  avatarState.nsfwPosition = pos;
   const tagEl = document.getElementById("avatar-nsfw-tag");
   tagEl.className = "avatar-nsfw-tag";
-  if (!estadoAvatar.nsfwAtivo) {
+  if (!avatarState.nsfwActive) {
     tagEl.classList.add("hidden");
   }
 
@@ -169,179 +167,176 @@ function atualizarNsfwPosicao(pos) {
   }
 }
 
-function atualizarCorFundo(valor, veioDoInputTexto = false) {
-  let hexFormatado = formatarHex(valor);
-  if (!hexFormatado) return;
+function updateBgColor(value, isFromTextInput = false) {
+  let formattedHex = formatHex(value);
+  if (!formattedHex) return;
 
-  estadoAvatar.corFundo = hexFormatado;
-  document.getElementById("input-cor-fundo").value = hexFormatado;
+  avatarState.bgColor = formattedHex;
+  document.getElementById("input-bg-color").value = formattedHex;
 
-  if (!veioDoInputTexto) {
-    document.getElementById("texto-cor-fundo").value =
-      hexFormatado.toUpperCase();
+  if (!isFromTextInput) {
+    document.getElementById("text-bg-color").value = formattedHex.toUpperCase();
   }
 
   document.getElementById("avatar-container").style.backgroundColor =
-    hexFormatado;
-  atualizarGlow(hexFormatado);
+    formattedHex;
+  updateGlow(formattedHex);
 }
 
-function atualizarCorLetra(valor, veioDoInputTexto = false) {
-  let hexFormatado = formatarHex(valor);
-  if (!hexFormatado) return;
+function updateTextColor(value, isFromTextInput = false) {
+  let formattedHex = formatHex(value);
+  if (!formattedHex) return;
 
-  estadoAvatar.corLetra = hexFormatado;
-  document.getElementById("input-cor-letra").value = hexFormatado;
+  avatarState.textColor = formattedHex;
+  document.getElementById("input-text-color").value = formattedHex;
 
-  if (!veioDoInputTexto) {
-    document.getElementById("texto-cor-letra").value =
-      hexFormatado.toUpperCase();
+  if (!isFromTextInput) {
+    document.getElementById("text-text-color").value =
+      formattedHex.toUpperCase();
   }
 
-  document.getElementById("avatar-text").style.color = hexFormatado;
+  document.getElementById("avatar-text").style.color = formattedHex;
 }
 
-function alterarFonte(fonteObj, botaoEl) {
-  estadoAvatar.fonteObj = fonteObj;
-  const txtEl = document.getElementById("avatar-text");
-  txtEl.style.fontFamily = fonteObj.cssFamily;
-  txtEl.style.transform = `translateY(${fonteObj.offsetY}px)`;
+function changeFont(fontObj, buttonEl) {
+  avatarState.fontObj = fontObj;
+  const textEl = document.getElementById("avatar-text");
+  textEl.style.fontFamily = fontObj.cssFamily;
+  textEl.style.transform = `translateY(${fontObj.offsetY}px)`;
 
-  const botoes = document.getElementById("font-options").children;
-  for (let b of botoes) {
+  const buttons = document.getElementById("font-options").children;
+  for (let b of buttons) {
     b.classList.remove("active");
   }
-  botaoEl.classList.add("active");
+  buttonEl.classList.add("active");
 }
 
-function atualizarTamanho(val, vindoDoInput) {
+function updateFontSize(val, isFromInput) {
   let num = parseFloat(val);
   if (isNaN(num) || num <= 0) num = 1;
 
-  estadoAvatar.tamanhoLetra = num;
+  avatarState.fontSize = num;
   document.getElementById("avatar-text").style.fontSize = num + "rem";
 
-  if (vindoDoInput) {
-    document.getElementById("input-tamanho").value = num;
+  if (isFromInput) {
+    document.getElementById("input-size").value = num;
   } else {
-    document.getElementById("input-tamanho-num").value = num;
+    document.getElementById("input-size-num").value = num;
   }
 }
 
-function atualizarGlow(hex) {
+function updateGlow(hex) {
   const glow = document.getElementById("preview-glow");
   glow.style.background = `linear-gradient(90deg, ${hex}, #4f46e5)`;
 }
 
-function gerarCorAleatoriaFundo() {
-  const letrasHex = "0123456789ABCDEF";
-  let cor = "#";
+function randomizeBgColor() {
+  const hexChars = "0123456789ABCDEF";
+  let color = "#";
   for (let i = 0; i < 6; i++) {
-    cor += letrasHex[Math.floor(Math.random() * 16)];
+    color += hexChars[Math.floor(Math.random() * 16)];
   }
-  atualizarCorFundo(cor);
+  updateBgColor(color);
 }
 
-function gerarCorAleatoriaLetra() {
-  const letrasHex = "0123456789ABCDEF";
-  let cor = "#";
+function randomizeTextColor() {
+  const hexChars = "0123456789ABCDEF";
+  let color = "#";
   for (let i = 0; i < 6; i++) {
-    cor += letrasHex[Math.floor(Math.random() * 16)];
+    color += hexChars[Math.floor(Math.random() * 16)];
   }
-  atualizarCorLetra(cor);
-  mostrarToast("Cor da letra aleatória gerada!", "fa-dice");
+  updateTextColor(color);
+  showToast("Cor da letra aleatória gerada!", "fa-dice");
 }
 
-function escolherFonteAleatoria() {
-  const indiceAleatorio = Math.floor(Math.random() * fontes.length);
-  const fonteEscolhida = fontes[indiceAleatorio];
+function randomizeFont() {
+  const randomIndex = Math.floor(Math.random() * fonts.length);
+  const chosenFont = fonts[randomIndex];
 
   const container = document.getElementById("font-options");
-  const botoes = container.children;
-  for (let i = 0; i < botoes.length; i++) {
-    if (fontes[i].cssFamily === fonteEscolhida.cssFamily) {
-      alterarFonte(fonteEscolhida, botoes[i]);
+  const buttons = container.children;
+  for (let i = 0; i < buttons.length; i++) {
+    if (fonts[i].cssFamily === chosenFont.cssFamily) {
+      changeFont(chosenFont, buttons[i]);
       break;
     }
   }
-  mostrarToast(
-    `Fonte alterada para: ${fonteEscolhida.nome.split(" ")[0]}`,
-    "fa-font",
-  );
+  showToast(`Fonte alterada para: ${chosenFont.name.split(" ")[0]}`, "fa-font");
 }
 
-function resetarPadroes() {
-  atualizarTexto("A");
-  gerarCorAleatoriaFundo();
-  atualizarCorLetra("#000000");
-  atualizarTamanho(16, false);
-  document.getElementById("input-tamanho-num").value = 16;
+function resetDefaults() {
+  updateText("A");
+  randomizeBgColor();
+  updateTextColor("#000000");
+  updateFontSize(16, false);
+  document.getElementById("input-size-num").value = 16;
   document.getElementById("input-nsfw-check").checked = false;
-  atualizarNsfwAtivo(false);
-  atualizarNsfwPosicao("bottom-right");
-  document.getElementById("input-nsfw-tamanho").value = 20;
-  document.getElementById("nsfw-tamanho-valor").innerText = "20px";
-  atualizarNsfwCor("#ff3399");
-  document.getElementById("input-nsfw-cor").value = "#ff3399";
-  document.getElementById("texto-nsfw-cor").value = "FF3399";
-  alterarFonte(fontes[0], document.getElementById("font-options").children[0]);
-  mostrarToast("Configurações restauradas!", "fa-rotate-right");
+  updateNsfwActive(false);
+  updateNsfwPosition("bottom-right");
+  document.getElementById("input-nsfw-size").value = 20;
+  document.getElementById("nsfw-size-value").innerText = "20px";
+  updateNsfwColor("#ff3399");
+  document.getElementById("input-nsfw-color").value = "#ff3399";
+  document.getElementById("text-nsfw-color").value = "FF3399";
+  initializeFonts();
+  changeFont(fonts[0], document.getElementById("font-options").children[0]);
+  showToast("Configurações restauradas!", "fa-rotate-right");
 }
 
-function baixarAvatar() {
+function downloadAvatar() {
   const canvas = document.createElement("canvas");
-  const tamanhoCanvas = 512;
-  canvas.width = tamanhoCanvas;
-  canvas.height = tamanhoCanvas;
+  const canvasSize = 512;
+  canvas.width = canvasSize;
+  canvas.height = canvasSize;
   const ctx = canvas.getContext("2d");
 
-  const raioBordaPx = 32;
+  const borderRadiusPx = 32;
 
   ctx.save();
   ctx.beginPath();
-  ctx.roundRect(0, 0, tamanhoCanvas, tamanhoCanvas, raioBordaPx);
-  ctx.fillStyle = estadoAvatar.corFundo;
+  ctx.roundRect(0, 0, canvasSize, canvasSize, borderRadiusPx);
+  ctx.fillStyle = avatarState.bgColor;
   ctx.fill();
   ctx.restore();
 
   let familyName = "Inter";
-  if (estadoAvatar.fonteObj.cssFamily.includes("Playfair"))
+  if (avatarState.fontObj.cssFamily.includes("Playfair"))
     familyName = "Playfair Display";
-  else if (estadoAvatar.fonteObj.cssFamily.includes("Fira"))
+  else if (avatarState.fontObj.cssFamily.includes("Fira"))
     familyName = "Fira Code";
-  else if (estadoAvatar.fonteObj.cssFamily.includes("Montserrat"))
+  else if (avatarState.fontObj.cssFamily.includes("Montserrat"))
     familyName = "Montserrat";
-  else if (estadoAvatar.fonteObj.cssFamily.includes("Bebas"))
+  else if (avatarState.fontObj.cssFamily.includes("Bebas"))
     familyName = "Bebas Neue";
-  else if (estadoAvatar.fonteObj.cssFamily.includes("Pacifico"))
+  else if (avatarState.fontObj.cssFamily.includes("Pacifico"))
     familyName = "Pacifico";
-  else if (estadoAvatar.fonteObj.cssFamily.includes("Cinzel"))
+  else if (avatarState.fontObj.cssFamily.includes("Cinzel"))
     familyName = "Cinzel";
-  else if (estadoAvatar.fonteObj.cssFamily.includes("Marker"))
+  else if (avatarState.fontObj.cssFamily.includes("Marker"))
     familyName = "Permanent Marker";
 
-  const fontSizePx = (estadoAvatar.tamanhoLetra / 16) * 260;
+  const fontSizePx = (avatarState.fontSize / 16) * 260;
   ctx.font = `900 ${fontSizePx}px "${familyName}", sans-serif`;
-  ctx.fillStyle = estadoAvatar.corLetra;
+  ctx.fillStyle = avatarState.textColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
   const offsetYCanvas =
-    (estadoAvatar.tamanhoLetra / 16) *
-    (tamanhoCanvas * estadoAvatar.fonteObj.canvasOffsetY);
+    (avatarState.fontSize / 16) *
+    (canvasSize * avatarState.fontObj.canvasOffsetY);
   ctx.fillText(
-    estadoAvatar.texto,
-    tamanhoCanvas / 2,
-    tamanhoCanvas / 2 + offsetYCanvas + fontSizePx * 0.05,
+    avatarState.text,
+    canvasSize / 2,
+    canvasSize / 2 + offsetYCanvas + fontSizePx * 0.05,
   );
 
-  if (estadoAvatar.nsfwAtivo) {
-    const fontSizeNsfwPx = (estadoAvatar.nsfwTamanho / 20) * 36;
+  if (avatarState.nsfwActive) {
+    const fontSizeNsfwPx = (avatarState.nsfwSize / 20) * 36;
     ctx.font = `700 ${fontSizeNsfwPx}px "Inter", sans-serif`;
 
     const paddingX = fontSizeNsfwPx * 0.6;
     const paddingY = fontSizeNsfwPx * 0.4;
-    const metrics = ctx.measureText(estadoAvatar.nsfwTexto);
+    const metrics = ctx.measureText(avatarState.nsfwText);
     const tagW = metrics.width + paddingX * 2;
     const tagH = fontSizeNsfwPx + paddingY * 1.5;
     const margin = 24;
@@ -349,18 +344,18 @@ function baixarAvatar() {
     let tagX = margin;
     let tagY = margin;
 
-    if (estadoAvatar.nsfwPosicao === "top-left") {
+    if (avatarState.nsfwPosition === "top-left") {
       tagX = margin;
       tagY = margin;
-    } else if (estadoAvatar.nsfwPosicao === "top-right") {
-      tagX = tamanhoCanvas - tagW - margin;
+    } else if (avatarState.nsfwPosition === "top-right") {
+      tagX = canvasSize - tagW - margin;
       tagY = margin;
-    } else if (estadoAvatar.nsfwPosicao === "bottom-left") {
+    } else if (avatarState.nsfwPosition === "bottom-left") {
       tagX = margin;
-      tagY = tamanhoCanvas - tagH - margin;
-    } else if (estadoAvatar.nsfwPosicao === "bottom-right") {
-      tagX = tamanhoCanvas - tagW - margin;
-      tagY = tamanhoCanvas - tagH - margin;
+      tagY = canvasSize - tagH - margin;
+    } else if (avatarState.nsfwPosition === "bottom-right") {
+      tagX = canvasSize - tagW - margin;
+      tagY = canvasSize - tagH - margin;
     }
 
     ctx.save();
@@ -370,27 +365,27 @@ function baixarAvatar() {
     ctx.fill();
     ctx.restore();
 
-    ctx.fillStyle = estadoAvatar.nsfwCor;
+    ctx.fillStyle = avatarState.nsfwColor;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(estadoAvatar.nsfwTexto, tagX + paddingX, tagY + tagH / 2);
+    ctx.fillText(avatarState.nsfwText, tagX + paddingX, tagY + tagH / 2);
   }
 
   const link = document.createElement("a");
-  link.download = `avatar-${estadoAvatar.texto.toLowerCase()}.png`;
+  link.download = `avatar-${avatarState.text.toLowerCase()}.png`;
   link.href = canvas.toDataURL("image/png");
   link.click();
 
-  mostrarToast("Avatar baixado com sucesso em PNG!", "fa-circle-check");
+  showToast("Avatar baixado com sucesso em PNG!", "fa-circle-check");
 }
 
-function mostrarToast(mensagem, iconeClass = "fa-circle-check") {
+function showToast(message, iconClass = "fa-circle-check") {
   const toast = document.getElementById("toast");
   const msgEl = document.getElementById("toast-msg");
   const iconEl = document.getElementById("toast-icon");
 
-  msgEl.innerText = mensagem;
-  iconEl.className = `fa-solid ${iconeClass}`;
+  msgEl.innerText = message;
+  iconEl.className = `fa-solid ${iconClass}`;
 
   toast.classList.remove("hidden");
   setTimeout(() => {
@@ -398,32 +393,31 @@ function mostrarToast(mensagem, iconeClass = "fa-circle-check") {
   }, 3000);
 }
 
-// Pequeno ajuste para escutar digitação direta nos inputs de texto de cor com ou sem '#'
 document.addEventListener("DOMContentLoaded", () => {
   document
-    .getElementById("texto-cor-fundo")
-    .addEventListener("input", (e) => atualizarCorFundo(e.target.value, true));
+    .getElementById("text-bg-color")
+    .addEventListener("input", (e) => updateBgColor(e.target.value, true));
   document
-    .getElementById("texto-cor-letra")
-    .addEventListener("input", (e) => atualizarCorLetra(e.target.value, true));
+    .getElementById("text-text-color")
+    .addEventListener("input", (e) => updateTextColor(e.target.value, true));
   document
-    .getElementById("texto-nsfw-cor")
-    .addEventListener("input", (e) => atualizarNsfwCor(e.target.value, true));
+    .getElementById("text-nsfw-color")
+    .addEventListener("input", (e) => updateNsfwColor(e.target.value, true));
 });
 
 window.onload = () => {
-  inicializarFontes();
-  gerarCorAleatoriaFundo();
-  atualizarCorLetra("#000000");
-  atualizarTamanho(16, false);
-  document.getElementById("input-tamanho-num").value = 16;
+  initializeFonts();
+  randomizeBgColor();
+  updateTextColor("#000000");
+  updateFontSize(16, false);
+  document.getElementById("input-size-num").value = 16;
   document.getElementById("input-nsfw-check").checked = false;
-  atualizarNsfwAtivo(false);
-  atualizarNsfwPosicao("bottom-right");
-  document.getElementById("input-nsfw-tamanho").value = 20;
-  document.getElementById("nsfw-tamanho-valor").innerText = "20px";
-  atualizarNsfwCor("#ff3399");
-  document.getElementById("input-nsfw-cor").value = "#ff3399";
-  document.getElementById("texto-nsfw-cor").value = "FF3399";
-  alterarFonte(fontes[0], document.getElementById("font-options").children[0]);
+  updateNsfwActive(false);
+  updateNsfwPosition("bottom-right");
+  document.getElementById("input-nsfw-size").value = 20;
+  document.getElementById("nsfw-size-value").innerText = "20px";
+  updateNsfwColor("#ff3399");
+  document.getElementById("input-nsfw-color").value = "#ff3399";
+  document.getElementById("text-nsfw-color").value = "FF3399";
+  changeFont(fonts[0], document.getElementById("font-options").children[0]);
 };
