@@ -246,7 +246,7 @@ function randomizeTextColor() {
     color += hexChars[Math.floor(Math.random() * 16)];
   }
   updateTextColor(color);
-  showToast("Cor da letra aleatória gerada!", "fa-dice");
+  showToast(translations[currentLang].toast_rand_color, "fa-dice");
 }
 
 function randomizeFont() {
@@ -261,7 +261,10 @@ function randomizeFont() {
       break;
     }
   }
-  showToast(`Fonte alterada para: ${chosenFont.name.split(" ")[0]}`, "fa-font");
+  showToast(
+    translations[currentLang].toast_rand_font + chosenFont.name.split(" ")[0],
+    "fa-font",
+  );
 }
 
 function resetDefaults() {
@@ -280,7 +283,7 @@ function resetDefaults() {
   document.getElementById("text-nsfw-color").value = "FF3399";
   initializeFonts();
   changeFont(fonts[0], document.getElementById("font-options").children[0]);
-  showToast("Configurações restauradas!", "fa-rotate-right");
+  showToast(translations[currentLang].toast_reset, "fa-rotate-right");
 }
 
 function downloadAvatar() {
@@ -376,7 +379,7 @@ function downloadAvatar() {
   link.href = canvas.toDataURL("image/png");
   link.click();
 
-  showToast("Avatar baixado com sucesso em PNG!", "fa-circle-check");
+  showToast(translations[currentLang].toast_saved, "fa-circle-check");
 }
 
 function showToast(message, iconClass = "fa-circle-check") {
@@ -394,6 +397,7 @@ function showToast(message, iconClass = "fa-circle-check") {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  translatePage(); // Traduz com base no i18n.js
   document
     .getElementById("text-bg-color")
     .addEventListener("input", (e) => updateBgColor(e.target.value, true));

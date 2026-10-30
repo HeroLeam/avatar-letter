@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avatar Emby - Gerador de Avatares</title>
+    <title>Avatar Emby - Avatar Generator</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,12 +28,12 @@
                 </div>
                 <div>
                     <h1>Avatar Emby</h1>
-                    <p>Criador de avatares tipográficos</p>
+                    <p data-i18n="subtitle">Typography avatar creator</p>
                 </div>
             </div>
             <button onclick="resetDefaults()" class="btn-secondary">
                 <i class="fa-solid fa-rotate-right"></i>
-                <span>Restaurar Padrão</span>
+                <span data-i18n="reset_btn">Reset Defaults</span>
             </button>
         </div>
     </header>
@@ -54,7 +54,7 @@
             <div class="action-buttons">
                 <button onclick="downloadAvatar()" class="btn-primary">
                     <i class="fa-solid fa-download"></i>
-                    <span>Baixar PNG em Alta Resolução</span>
+                    <span data-i18n="download_btn">Download High-Res PNG</span>
                 </button>
             </div>
         </div>
@@ -63,14 +63,14 @@
         <div class="controls-panel">
             <h2>
                 <i class="fa-solid fa-sliders"></i>
-                <span>Personalização</span>
+                <span data-i18n="panel_title">Customization</span>
             </h2>
 
             <!-- Avatar Text -->
             <div class="control-group">
                 <label for="input-text">
-                    <span>Texto do Avatar</span>
-                    <span class="label-hint">Recomendado: 1 a 3 caracteres</span>
+                    <span data-i18n="label_text">Avatar Text</span>
+                    <span class="label-hint" data-i18n="hint_text">Recommended: 1 to 3 chars</span>
                 </label>
                 <input type="text" id="input-text" value="A" maxlength="5" oninput="updateText(this.value)">
             </div>
@@ -79,18 +79,18 @@
             <div class="nsfw-box">
                 <label class="checkbox-label">
                     <input type="checkbox" id="input-nsfw-check" onchange="updateNsfwActive(this.checked)">
-                    <span>Exibir Tag no Canto (Ex: NSFW)</span>
+                    <span data-i18n="label_nsfw_toggle">Show Corner Tag (e.g., NSFW)</span>
                 </label>
 
                 <div id="nsfw-options" class="nsfw-sub-options hidden">
                     <div class="nsfw-grid">
                         <div class="control-subgroup">
-                            <label>Texto da Tag</label>
+                            <label data-i18n="label_nsfw_text">Tag Text</label>
                             <input type="text" id="input-nsfw-text" value="NSFW" maxlength="8"
                                 oninput="updateNsfwText(this.value)">
                         </div>
                         <div class="control-subgroup">
-                            <label>Cor da Tag</label>
+                            <label data-i18n="label_nsfw_color">Tag Color</label>
                             <div class="color-input-wrapper">
                                 <input type="color" id="input-nsfw-color" value="#ff3399"
                                     oninput="updateNsfwColor(this.value)">
@@ -99,19 +99,19 @@
                             </div>
                         </div>
                         <div class="control-subgroup">
-                            <label>Posição</label>
+                            <label data-i18n="label_nsfw_position">Position</label>
                             <select id="input-nsfw-position" onchange="updateNsfwPosition(this.value)">
-                                <option value="top-left">Superior Esquerdo</option>
-                                <option value="top-right">Superior Direito</option>
-                                <option value="bottom-left">Inferior Esquerdo</option>
-                                <option value="bottom-right" selected>Inferior Direito</option>
+                                <option value="top-left" data-i18n="pos_top_left">Top Left</option>
+                                <option value="top-right" data-i18n="pos_top_right">Top Right</option>
+                                <option value="bottom-left" data-i18n="pos_bottom_left">Bottom Left</option>
+                                <option value="bottom-right" selected data-i18n="pos_bottom_right">Bottom Right</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="control-subgroup">
                         <div class="slider-header">
-                            <label>Tamanho da Tag</label>
+                            <label data-i18n="label_nsfw_size">Tag Size</label>
                             <span id="nsfw-size-value" class="value-display">20px</span>
                         </div>
                         <input type="range" id="input-nsfw-size" min="10" max="48" step="1" value="20"
@@ -125,9 +125,9 @@
                 <!-- Background Color -->
                 <div class="control-group">
                     <div class="label-with-action">
-                        <label>Cor de Fundo</label>
+                        <label data-i18n="label_bg_color">Background Color</label>
                         <button onclick="randomizeBgColor()" class="btn-text">
-                            <i class="fa-solid fa-dice"></i> Aleatória
+                            <i class="fa-solid fa-dice"></i> <span data-i18n="btn_random">Random</span>
                         </button>
                     </div>
                     <div class="color-input-wrapper">
@@ -139,9 +139,9 @@
                 <!-- Text Color -->
                 <div class="control-group">
                     <div class="label-with-action">
-                        <label>Cor da Letra</label>
+                        <label data-i18n="label_text_color">Text Color</label>
                         <button onclick="randomizeTextColor()" class="btn-text">
-                            <i class="fa-solid fa-dice"></i> Aleatória
+                            <i class="fa-solid fa-dice"></i> <span data-i18n="btn_random">Random</span>
                         </button>
                     </div>
                     <div class="color-input-wrapper">
@@ -154,9 +154,9 @@
             <!-- Font Family -->
             <div class="control-group">
                 <div class="label-with-action">
-                    <label>Estilo da Fonte</label>
+                    <label data-i18n="label_font_style">Font Style</label>
                     <button onclick="randomizeFont()" class="btn-text">
-                        <i class="fa-solid fa-dice"></i> Fonte Aleatória
+                        <i class="fa-solid fa-dice"></i> <span data-i18n="btn_random_font">Random Font</span>
                     </button>
                 </div>
                 <div class="font-options-grid" id="font-options">
@@ -167,7 +167,7 @@
             <!-- Font Size -->
             <div class="control-group">
                 <div class="slider-header">
-                    <label>Tamanho da Fonte</label>
+                    <label data-i18n="label_font_size">Font Size</label>
                     <div class="number-input-wrap">
                         <input type="number" id="input-size-num" value="16" min="1" step="0.5"
                             oninput="updateFontSize(this.value, true)">
@@ -183,17 +183,18 @@
     </main>
 
     <!-- Footer -->
-    <footer class="footer">
-        Avatar Emby &bull; Desenvolvido para uso web interativo
+    <footer class="footer" data-i18n="footer_text">
+        Avatar Emby &bull; Built for interactive web use
     </footer>
 
     <!-- Toast Notification -->
     <div id="toast" class="toast hidden">
         <i class="fa-solid fa-circle-check" id="toast-icon"></i>
-        <span id="toast-msg">Avatar salvo com sucesso!</span>
+        <span id="toast-msg">Avatar saved successfully!</span>
     </div>
 
-    <!-- External JS -->
+    <!-- External JS Files -->
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
 </body>
 
