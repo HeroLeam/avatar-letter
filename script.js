@@ -106,11 +106,32 @@ function atualizarNsfwTexto(valor) {
   document.getElementById("avatar-nsfw-tag").innerText = estadoAvatar.nsfwTexto;
 }
 
-function atualizarNsfwCor(hex) {
-  estadoAvatar.nsfwCor = hex;
-  document.getElementById("input-nsfw-cor").value = hex;
-  document.getElementById("texto-nsfw-cor").value = hex;
-  document.getElementById("avatar-nsfw-tag").style.color = hex;
+// Função auxiliar para validar e formatar o hexadecimal com ou sem '#'
+function formatarHex(valor) {
+  let limpo = valor.trim();
+  if (limpo.startsWith("#")) {
+    limpo = limpo.substring(1);
+  }
+  // Verifica se tem 3 ou 6 caracteres válidos
+  if (limpo.length === 3 || limpo.length === 6) {
+    return "#" + limpo;
+  }
+  return null;
+}
+
+function atualizarNsfwCor(valor, veioDoInputTexto = false) {
+  let hexFormatado = formatarHex(valor);
+  if (!hexFormatado) return; // Se for inválido enquanto digita, não quebra
+
+  estadoAvatar.nsfwCor = hexFormatado;
+  document.getElementById("input-nsfw-cor").value = hexFormatado;
+
+  if (!veioDoInputTexto) {
+    document.getElementById("texto-nsfw-cor").value =
+      hexFormatado.toUpperCase();
+  }
+
+  document.getElementById("avatar-nsfw-tag").style.color = hexFormatado;
 }
 
 function atualizarNsfwTamanho(val) {
@@ -148,19 +169,36 @@ function atualizarNsfwPosicao(pos) {
   }
 }
 
-function atualizarCorFundo(hex) {
-  estadoAvatar.corFundo = hex;
-  document.getElementById("input-cor-fundo").value = hex;
-  document.getElementById("texto-cor-fundo").value = hex;
-  document.getElementById("avatar-container").style.backgroundColor = hex;
-  atualizarGlow(hex);
+function atualizarCorFundo(valor, veioDoInputTexto = false) {
+  let hexFormatado = formatarHex(valor);
+  if (!hexFormatado) return;
+
+  estadoAvatar.corFundo = hexFormatado;
+  document.getElementById("input-cor-fundo").value = hexFormatado;
+
+  if (!veioDoInputTexto) {
+    document.getElementById("texto-cor-fundo").value =
+      hexFormatado.toUpperCase();
+  }
+
+  document.getElementById("avatar-container").style.backgroundColor =
+    hexFormatado;
+  atualizarGlow(hexFormatado);
 }
 
-function atualizarCorLetra(hex) {
-  estadoAvatar.corLetra = hex;
-  document.getElementById("input-cor-letra").value = hex;
-  document.getElementById("texto-cor-letra").value = hex;
-  document.getElementById("avatar-text").style.color = hex;
+function atualizarCorLetra(valor, veioDoInputTexto = false) {
+  let hexFormatado = formatarHex(valor);
+  if (!hexFormatado) return;
+
+  estadoAvatar.corLetra = hexFormatado;
+  document.getElementById("input-cor-letra").value = hexFormatado;
+
+  if (!veioDoInputTexto) {
+    document.getElementById("texto-cor-letra").value =
+      hexFormatado.toUpperCase();
+  }
+
+  document.getElementById("avatar-text").style.color = hexFormatado;
 }
 
 function alterarFonte(fonteObj, botaoEl) {
@@ -240,10 +278,12 @@ function resetarPadroes() {
   document.getElementById("input-tamanho-num").value = 16;
   document.getElementById("input-nsfw-check").checked = false;
   atualizarNsfwAtivo(false);
+  atualizarNsfwPosicao("bottom-right");
   document.getElementById("input-nsfw-tamanho").value = 20;
-  atualizarNsfwTamanho(20);
+  document.getElementById("nsfw-tamanho-valor").innerText = "20px";
   atualizarNsfwCor("#ff3399");
-  inicializarFontes();
+  document.getElementById("input-nsfw-cor").value = "#ff3399";
+  document.getElementById("texto-nsfw-cor").value = "FF3399";
   alterarFonte(fontes[0], document.getElementById("font-options").children[0]);
   mostrarToast("Configurações restauradas!", "fa-rotate-right");
 }
@@ -296,7 +336,7 @@ function baixarAvatar() {
   );
 
   if (estadoAvatar.nsfwAtivo) {
-    const fontSizeNsfwPx = (estadoAvatar.nsfwTamanho / 20) * 36; // Proporção escalada com o novo padrão de 20px
+    const fontSizeNsfwPx = (estadoAvatar.nsfwTamanho / 20) * 36;
     ctx.font = `700 ${fontSizeNsfwPx}px "Inter", sans-serif`;
 
     const paddingX = fontSizeNsfwPx * 0.6;
@@ -358,6 +398,19 @@ function mostrarToast(mensagem, iconeClass = "fa-circle-check") {
   }, 3000);
 }
 
+// Pequeno ajuste para escutar digitação direta nos inputs de texto de cor com ou sem '#'
+document.addEventListener("DOMContentLoaded", () => {
+  document
+    .getElementById("texto-cor-fundo")
+    .addEventListener("input", (e) => atualizarCorFundo(e.target.value, true));
+  document
+    .getElementById("texto-cor-letra")
+    .addEventListener("input", (e) => atualizarCorLetra(e.target.value, true));
+  document
+    .getElementById("texto-nsfw-cor")
+    .addEventListener("input", (e) => atualizarNsfwCor(e.target.value, true));
+});
+
 window.onload = () => {
   inicializarFontes();
   gerarCorAleatoriaFundo();
@@ -371,6 +424,6 @@ window.onload = () => {
   document.getElementById("nsfw-tamanho-valor").innerText = "20px";
   atualizarNsfwCor("#ff3399");
   document.getElementById("input-nsfw-cor").value = "#ff3399";
-  document.getElementById("texto-nsfw-cor").value = "#FF3399";
+  document.getElementById("texto-nsfw-cor").value = "FF3399";
   alterarFonte(fontes[0], document.getElementById("font-options").children[0]);
 };
