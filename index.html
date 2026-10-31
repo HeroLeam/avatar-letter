@@ -14,7 +14,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- External CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./src/css/style.css">
 </head>
 
 <body>
@@ -79,7 +79,7 @@
             <div class="nsfw-box">
                 <label class="checkbox-label">
                     <input type="checkbox" id="input-nsfw-check" onchange="updateNsfwActive(this.checked)">
-                    <span data-i18n="label_nsfw_toggle">Show Corner Tag (e.g., NSFW)</span>
+                    <span data-i18n="label_nsfw_toggle">Show Tag (e.g., NSFW)</span>
                 </label>
 
                 <div id="nsfw-options" class="nsfw-sub-options hidden">
@@ -101,10 +101,9 @@
                         <div class="control-subgroup">
                             <label data-i18n="label_nsfw_position">Position</label>
                             <select id="input-nsfw-position" onchange="updateNsfwPosition(this.value)">
-                                <option value="top-left" data-i18n="pos_top_left">Top Left</option>
-                                <option value="top-right" data-i18n="pos_top_right">Top Right</option>
-                                <option value="bottom-left" data-i18n="pos_bottom_left">Bottom Left</option>
-                                <option value="bottom-right" selected data-i18n="pos_bottom_right">Bottom Right</option>
+                                <option value="bottom-center" selected data-i18n="pos_bottom_center">Bottom Center
+                                </option>
+                                <option value="top-center" data-i18n="pos_top_center">Top Center</option>
                             </select>
                         </div>
                     </div>
@@ -194,8 +193,8 @@
     </div>
 
     <!-- External JS Files -->
-    <script src="i18n.js"></script>
-    <script src="script.js"></script>
+    <script src="./src/js/i18n.js"></script>
+    <script src="./src/js/script.js"></script>
 </body>
 
 </html>

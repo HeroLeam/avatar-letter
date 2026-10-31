@@ -6,14 +6,12 @@ const translations = {
     panel_title: "Customization",
     label_text: "Avatar Text",
     hint_text: "Recommended: 1 to 3 chars",
-    label_nsfw_toggle: "Show Corner Tag (e.g., NSFW)",
+    label_nsfw_toggle: "Show Tag (e.g., NSFW)",
     label_nsfw_text: "Tag Text",
     label_nsfw_color: "Tag Color",
     label_nsfw_position: "Position",
-    pos_top_left: "Top Left",
-    pos_top_right: "Top Right",
-    pos_bottom_left: "Bottom Left",
-    pos_bottom_right: "Bottom Right",
+    pos_bottom_center: "Bottom Center",
+    pos_top_center: "Top Center",
     label_nsfw_size: "Tag Size",
     label_bg_color: "Background Color",
     label_text_color: "Text Color",
@@ -34,14 +32,12 @@ const translations = {
     panel_title: "Personalização",
     label_text: "Texto do Avatar",
     hint_text: "Recomendado: 1 a 3 caracteres",
-    label_nsfw_toggle: "Exibir Tag no Canto (Ex: NSFW)",
+    label_nsfw_toggle: "Exibir Tag (Ex: NSFW)",
     label_nsfw_text: "Texto da Tag",
     label_nsfw_color: "Cor da Tag",
     label_nsfw_position: "Posição",
-    pos_top_left: "Superior Esquerdo",
-    pos_top_right: "Superior Direito",
-    pos_bottom_left: "Inferior Esquerdo",
-    pos_bottom_right: "Inferior Direito",
+    pos_bottom_center: "Centro Inferior",
+    pos_top_center: "Centro Superior",
     label_nsfw_size: "Tamanho da Tag",
     label_bg_color: "Cor de Fundo",
     label_text_color: "Cor da Letra",
@@ -57,7 +53,6 @@ const translations = {
   },
 };
 
-// Detect browser language
 const userLang = navigator.language || navigator.userLanguage;
 const currentLang = userLang.toLowerCase().startsWith("pt") ? "pt" : "en";
 

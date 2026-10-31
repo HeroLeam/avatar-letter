@@ -65,9 +65,9 @@ let avatarState = {
   fontSize: 16,
   nsfwActive: false,
   nsfwText: "NSFW",
-  nsfwColor: "#ff3399",
-  nsfwPosition: "bottom-right",
-  nsfwSize: 24,
+  nsfwColor: "#FF0080",
+  nsfwPosition: "bottom-center", // Padrão centralizado embaixo
+  nsfwSize: 20,
 };
 
 function initializeFonts() {
@@ -148,22 +148,11 @@ function updateNsfwPosition(pos) {
 
   tagEl.style.top = "";
   tagEl.style.bottom = "";
-  tagEl.style.left = "";
-  tagEl.style.right = "";
 
-  const margin = "12px";
-  if (pos === "top-left") {
-    tagEl.style.top = margin;
-    tagEl.style.left = margin;
-  } else if (pos === "top-right") {
-    tagEl.style.top = margin;
-    tagEl.style.right = margin;
-  } else if (pos === "bottom-left") {
-    tagEl.style.bottom = margin;
-    tagEl.style.left = margin;
+  if (pos === "top-center") {
+    tagEl.style.top = "20px";
   } else {
-    tagEl.style.bottom = margin;
-    tagEl.style.right = margin;
+    tagEl.style.bottom = "20px";
   }
 }
 
@@ -275,11 +264,11 @@ function resetDefaults() {
   document.getElementById("input-size-num").value = 16;
   document.getElementById("input-nsfw-check").checked = false;
   updateNsfwActive(false);
-  updateNsfwPosition("bottom-right");
+  updateNsfwPosition("bottom-center");
   document.getElementById("input-nsfw-size").value = 20;
   document.getElementById("nsfw-size-value").innerText = "20px";
-  updateNsfwColor("#ff3399");
-  document.getElementById("input-nsfw-color").value = "#ff3399";
+  updateNsfwColor("#FF0080");
+  document.getElementById("input-nsfw-color").value = "#FF0080";
   document.getElementById("text-nsfw-color").value = "FF3399";
   initializeFonts();
   changeFont(fonts[0], document.getElementById("font-options").children[0]);
@@ -342,36 +331,25 @@ function downloadAvatar() {
     const metrics = ctx.measureText(avatarState.nsfwText);
     const tagW = metrics.width + paddingX * 2;
     const tagH = fontSizeNsfwPx + paddingY * 1.5;
-    const margin = 24;
+    const margin = 40;
 
-    let tagX = margin;
-    let tagY = margin;
-
-    if (avatarState.nsfwPosition === "top-left") {
-      tagX = margin;
-      tagY = margin;
-    } else if (avatarState.nsfwPosition === "top-right") {
-      tagX = canvasSize - tagW - margin;
-      tagY = margin;
-    } else if (avatarState.nsfwPosition === "bottom-left") {
-      tagX = margin;
-      tagY = canvasSize - tagH - margin;
-    } else if (avatarState.nsfwPosition === "bottom-right") {
-      tagX = canvasSize - tagW - margin;
-      tagY = canvasSize - tagH - margin;
-    }
+    let tagX = (canvasSize - tagW) / 2; // Centralizado horizontalmente
+    let tagY =
+      avatarState.nsfwPosition === "top-center"
+        ? margin
+        : canvasSize - tagH - margin;
 
     ctx.save();
     ctx.beginPath();
     ctx.roundRect(tagX, tagY, tagW, tagH, 8);
-    ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
+    ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
     ctx.fill();
     ctx.restore();
 
     ctx.fillStyle = avatarState.nsfwColor;
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(avatarState.nsfwText, tagX + paddingX, tagY + tagH / 2);
+    ctx.fillText(avatarState.nsfwText, canvasSize / 2, tagY + tagH / 2);
   }
 
   const link = document.createElement("a");
@@ -397,7 +375,7 @@ function showToast(message, iconClass = "fa-circle-check") {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  translatePage(); // Traduz com base no i18n.js
+  translatePage();
   document
     .getElementById("text-bg-color")
     .addEventListener("input", (e) => updateBgColor(e.target.value, true));
@@ -417,11 +395,11 @@ window.onload = () => {
   document.getElementById("input-size-num").value = 16;
   document.getElementById("input-nsfw-check").checked = false;
   updateNsfwActive(false);
-  updateNsfwPosition("bottom-right");
+  updateNsfwPosition("bottom-center");
   document.getElementById("input-nsfw-size").value = 20;
   document.getElementById("nsfw-size-value").innerText = "20px";
-  updateNsfwColor("#ff3399");
-  document.getElementById("input-nsfw-color").value = "#ff3399";
+  updateNsfwColor("#FF0080");
+  document.getElementById("input-nsfw-color").value = "#FF0080";
   document.getElementById("text-nsfw-color").value = "FF3399";
   changeFont(fonts[0], document.getElementById("font-options").children[0]);
 };
